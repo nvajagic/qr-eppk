@@ -4,6 +4,7 @@ import { z } from "zod";
 import { toFormikValidationSchema } from "zod-formik-adapter";
 import Button from "../Button/Button";
 import Input from "../Input/Input";
+import { Edpk, PSResponse } from "~/types/responses";
 
 const plateSchema = z.object({
   plate: z
@@ -11,13 +12,23 @@ const plateSchema = z.object({
     .regex(/^[a-z]{2}\d{3}[a-z]{2}$/, "Format tablice mora biti NS111NS"),
 });
 
-const PlateForm = () => {
+const PlateForm = ({ saveFines }: { saveFines: (data: Edpk[]) => void }) => {
   return (
     <Formik
       initialValues={{ plate: "" }}
       validationSchema={toFormikValidationSchema(plateSchema)}
-      onSubmit={(values, actions) => {
-        console.log(values);
+      onSubmit={async (values, actions) => {
+        const res = await fetch(
+          `https://eppk.parkingns.rs/eppk/api/user/checkIfVoziloNaDepou?regBr=${values.plate.toUpperCase()}`,
+        );
+        if (!res.ok) {
+          throw new Error(
+            "Greska u dobavljanju informacija sa parking servisa",
+          );
+        }
+
+        const data = (await res.json()) as PSResponse;
+        saveFines(data.edpkList);
       }}
     >
       {({ isSubmitting }) => (

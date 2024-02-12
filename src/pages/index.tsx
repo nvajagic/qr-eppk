@@ -1,7 +1,13 @@
 import Head from "next/head";
+import { useState } from "react";
 import PlateForm from "~/components/Forms/PlateForm";
+import FineTableItem from "~/components/Table/FineTableItem";
+import Table from "~/components/Table/Table";
+import type { Edpk, PSResponse } from "~/types/responses";
 
 export default function Home() {
+  const [fines, setFines] = useState<Edpk[]>([]);
+
   return (
     <>
       <Head>
@@ -15,9 +21,24 @@ export default function Home() {
             QR ePPK
           </h1>
           <div className="gap-4 sm:grid-cols-2 md:gap-8">
-            <PlateForm />
+            <PlateForm saveFines={(data) => setFines(data)} />
           </div>
-        </div>
+          {fines.length > 0 ? (
+                <Table
+                  headers={[
+                    "Broj Naloga",
+                    "Vreme Izdavanja",
+                    "Poziv Na Broj",
+                    "Za Uplatu",
+                  ]}
+                >
+                  {fines.length > 0 &&
+                    fines.map((fine, index) => (
+                      <FineTableItem {...fine} key={`fine-${index}`} />
+                    ))}
+                </Table>
+              ) : null}
+          </div>
       </main>
     </>
   );
