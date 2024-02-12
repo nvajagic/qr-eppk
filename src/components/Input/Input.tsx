@@ -1,23 +1,24 @@
+import { useField } from "formik";
+
 type InputProps = {
   label: string;
   placeholder: string;
-  value: string;
-  error: boolean;
-  onChange: (value: string) => void;
+  name: string;
+  upperCase?: boolean;
 };
 
-const Input = ({ label, placeholder, value, error, onChange }: InputProps) => {
+const Input = ({ label, ...props }: InputProps) => {
+  const [field, meta] = useField(props);
+
   return (
     <label className="form-control w-full max-w-xs">
-      <div className="label">
-        <span className="label-text">{label}</span>
-      </div>
+      <span className="label-text pb-2">{label}</span>
       <input
+        {...field}
         type="text"
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        placeholder={placeholder}
-        className={`input input-bordered ${error ? "input-error" : ""} w-full max-w-xs`}
+        placeholder={props.placeholder}
+        className={`input input-bordered ${meta.touched && meta.error ? "input-error" : ""} w-full max-w-xs`}
+        style={{ textTransform: props.upperCase ? "uppercase" : "none" }}
       />
     </label>
   );
