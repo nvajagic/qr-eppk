@@ -4,7 +4,7 @@ import { z } from "zod";
 import { toFormikValidationSchema } from "zod-formik-adapter";
 import Button from "../Button/Button";
 import Input from "../Input/Input";
-import { Edpk, PSResponse } from "~/types/responses";
+import type { Edpk, PSResponse } from "~/types/responses";
 
 const plateSchema = z.object({
   plate: z

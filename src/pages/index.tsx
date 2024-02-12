@@ -3,7 +3,7 @@ import { useState } from "react";
 import PlateForm from "~/components/Forms/PlateForm";
 import FineTableItem from "~/components/Table/FineTableItem";
 import Table from "~/components/Table/Table";
-import type { Edpk, PSResponse } from "~/types/responses";
+import type { Edpk } from "~/types/responses";
 
 export default function Home() {
   const [fines, setFines] = useState<Edpk[]>([]);
