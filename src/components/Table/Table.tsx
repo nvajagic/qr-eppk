@@ -8,7 +8,7 @@ type TableProps = PropsWithChildren<{
 const Table = ({ headers, children, hasButton }: TableProps) => {
   return (
     <div className="overflow-x-auto">
-      <table className="table">
+      <table className="table-lg">
         <thead>
           <tr>
             {headers.map((header, index) => (
